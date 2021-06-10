@@ -1,0 +1,58 @@
+version: '2'
+services:
+  zookeeper:
+    image: 'confluentinc/cp-zookeeper:latest'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - '22181:2181'
+  kafka:
+    image: 'confluentinc/cp-kafka:latest'
+    depends_on:
+      - zookeeper
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:19092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      
+  kafka-producer:
+    depends_on:
+      - kafka
+      - zookeeper
+    build: ../kafka-producer
+    ports:
+      - '8801:8080'
+    restart: always
+    environment:
+      PROFILE: production
+      KAFKA_PORT: 9092
+      
+  kafka-processor:
+    depends_on:
+      - kafka
+      - zookeeper
+    build: ../kafka-processor
+    ports:
+      - '8802:8080'
+    restart: always
+    environment:
+      PROFILE: production
+      KAFKA_PORT: 9092
+      
+  kafka-consumer:
+    depends_on:
+      - kafka
+      - zookeeper
+    build: ../kafka-consumer
+    ports:
+      - '8803:8080'
+    restart: always
+    environment:
+      PROFILE: production      
+      KAFKA_PORT: 9092
