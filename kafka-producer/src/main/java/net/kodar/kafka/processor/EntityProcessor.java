@@ -1,7 +1,8 @@
 package net.kodar.kafka.processor;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import lombok.SneakyThrows;
 import net.kodar.kafka.data.entity.IHelpEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,21 @@ public class EntityProcessor {
     this.kafkaTemplate = kafkaTemplate;
   }
 
+  @SneakyThrows
   public void crawl() {
+    Random random = new Random();
 
-    List<IHelpEntity> IHelpEntities = Arrays
-        .asList(new IHelpEntity(true, "Hello", "Borka"),
-            new IHelpEntity(false, "this is a", "kstream test"));
+    while (true) {
+      Thread.sleep(2000);
+      IHelpEntity entity = new IHelpEntity(random.nextBoolean(),
+          UUID.randomUUID().toString(),
+          UUID.randomUUID().toString());
 
-    IHelpEntities
-        .forEach(IHelpEntity -> {
-          kafkaTemplate.send(KAFKA_TOPIC, IHelpEntity);
-          System.out.println("IHelpEntity message" + IHelpEntity.getDomain());
-        });
+      kafkaTemplate.send(KAFKA_TOPIC, entity);
 
+      System.out.printf("IHelpEntity PRODUCED[%s] with Status -> [%s]%n \r\n",
+          entity.getDomain(),
+          entity.isDead());
+    }
   }
 }

@@ -11,8 +11,9 @@ public class EntityKafkaConsumer {
 
   @Bean
   public Consumer<KStream<String, IHelpEntity>> consumerService() {
-    return kstream -> kstream.foreach((key, IHelpEntity) -> {
-      System.out.printf("IHelpEntity consumed[%s] Status[%s]%n", IHelpEntity.getDomain(), IHelpEntity.isDead());
-    });
+    return kstream -> kstream.foreach((key, IHelpEntity) ->
+        System.out.printf("IHelpEntity CONSUMED[%s] with Status -> [%s]%n \r\n",
+        IHelpEntity.getDomain(),
+        IHelpEntity.isDead()));
   }
 }
