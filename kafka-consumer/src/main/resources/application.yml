@@ -1,9 +1,6 @@
-server.port:
-  8069
-
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
     consumer:
       properties:
         spring:
@@ -26,4 +23,4 @@ spring.cloud.stream:
               deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     binder:
       brokers:
-        - localhost:9092
+        - kafka:19092
