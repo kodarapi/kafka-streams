@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/entity")
 public class EntityService {
 
-
   private final EntityProcessor entityProcessor;
 
   public EntityService(EntityProcessor entityProcessor) {

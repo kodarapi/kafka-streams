@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EntityProcessor {
 
-  private final String KAFKA_TOPIC = "web-domains";
+  private final static String KAFKA_TOPIC = "web-domains";
   private final KafkaTemplate<String, IHelpEntity> kafkaTemplate;
 
   public EntityProcessor(KafkaTemplate<String, IHelpEntity> kafkaTemplate) {
