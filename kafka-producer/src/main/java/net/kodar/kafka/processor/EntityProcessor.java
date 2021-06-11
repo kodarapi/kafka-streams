@@ -2,21 +2,23 @@ package net.kodar.kafka.processor;
 
 import java.util.Arrays;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import net.kodar.kafka.data.entity.IHelpEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class EntityProcessor {
 
-  private final static String KAFKA_TOPIC = "web-domains";
+  private static final String KAFKA_TOPIC = "web-domains";
   private final KafkaTemplate<String, IHelpEntity> kafkaTemplate;
 
   public EntityProcessor(KafkaTemplate<String, IHelpEntity> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  public void crawl() {
+  public void produceMessage() {
 
     List<IHelpEntity> IHelpEntities = Arrays
         .asList(new IHelpEntity(true, "Hello", "Borka"),
@@ -25,7 +27,7 @@ public class EntityProcessor {
     IHelpEntities
         .forEach(IHelpEntity -> {
           kafkaTemplate.send(KAFKA_TOPIC, IHelpEntity);
-          System.out.println("IHelpEntity message" + IHelpEntity.getDomain());
+          log.debug("IHelpEntity message" + IHelpEntity.getDomain());
         });
 
   }

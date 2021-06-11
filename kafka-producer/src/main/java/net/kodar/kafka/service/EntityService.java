@@ -17,7 +17,7 @@ public class EntityService {
 
   @GetMapping("/process")
   public String lookup() {
-    entityProcessor.crawl();
+    entityProcessor.produceMessage();
     return "IHelpEntity crawler has scrapped your data";
   }
 }
