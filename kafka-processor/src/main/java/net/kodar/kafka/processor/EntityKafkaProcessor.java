@@ -14,10 +14,10 @@ public class EntityKafkaProcessor {
   @Bean
   public Function<KStream<String, IHelpEntity>, KStream<String, IHelpEntity>> entityProcessor() {
 
-    return kstream -> kstream.filter((key, IHelpEntity) -> {
-      log.debug("Processing...");
-
-      return IHelpEntity.getDomain() != null;
+    return kstream -> kstream.filter((key, entity) -> {
+      System.out.print("Processing... \r\n");
+      return !entity.isDead();
     });
+
   }
 }

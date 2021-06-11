@@ -1,7 +1,8 @@
 package net.kodar.kafka.processor;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.kodar.kafka.data.entity.IHelpEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,22 +14,26 @@ public class EntityProcessor {
 
   private static final String KAFKA_TOPIC = "web-domains";
   private final KafkaTemplate<String, IHelpEntity> kafkaTemplate;
+  private final Random random = new Random();
 
   public EntityProcessor(KafkaTemplate<String, IHelpEntity> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
 
+  @SneakyThrows
   public void produceMessage() {
 
-    List<IHelpEntity> IHelpEntities = Arrays
-        .asList(new IHelpEntity(true, "Hello", "Borka"),
-            new IHelpEntity(false, "this is a", "kstream test"));
+    while (true) {
+      Thread.sleep(2000);
+      IHelpEntity entity = new IHelpEntity(random.nextBoolean(),
+          UUID.randomUUID().toString(),
+          UUID.randomUUID().toString());
 
-    IHelpEntities
-        .forEach(IHelpEntity -> {
-          kafkaTemplate.send(KAFKA_TOPIC, IHelpEntity);
-          log.debug("IHelpEntity message" + IHelpEntity.getDomain());
-        });
+      kafkaTemplate.send(KAFKA_TOPIC, entity);
 
+      System.out.printf("IHelpEntity PRODUCED[%s] with Status -> [%s]%n \r\n",
+          entity.getDomain(),
+          entity.isDead());
+    }
   }
 }
