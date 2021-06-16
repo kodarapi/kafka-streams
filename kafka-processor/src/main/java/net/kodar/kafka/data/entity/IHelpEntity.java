@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IHelpEntity {
+
   boolean isDead;
   private String health;
   private String domain;

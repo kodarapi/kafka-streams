@@ -10,13 +10,20 @@ spring:
 
 spring.cloud.stream:
   function:
-    definition: consumerService
+    definition: activeDomainConsumer,inactiveDomainConsumer
   bindings:
-    consumerService-in-0:
+    activeDomainConsumer-in-0:
       destination: active.web-domains
+    inactiveDomainConsumer-in-0:
+      destination: inactive.web-domains
   kafka:
     bindings:
-      consumerService-in-0:
+      activeDomainConsumer-in-0:
+        consumer:
+          configuration:
+            value:
+              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      inactiveDomainConsumer-in-0:
         consumer:
           configuration:
             value:
@@ -24,3 +31,4 @@ spring.cloud.stream:
     binder:
       brokers:
         - localhost:19092
+server.port: 5053

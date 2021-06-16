@@ -14,8 +14,6 @@ spring.cloud.stream:
   bindings:
     entityProcessor-in-0:
       destination: web-domains
-    entityProcessor-out-0:
-      destination: active.web-domains
   kafka:
     bindings:
       entityProcessor-in-0:

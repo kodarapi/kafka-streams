@@ -12,7 +12,15 @@ import org.springframework.context.annotation.Configuration;
 public class EntityKafkaConsumer {
 
   @Bean
-  public Consumer<KStream<String, IHelpEntity>> consumerService() {
+  public Consumer<KStream<String, IHelpEntity>> activeDomainConsumer() {
+    return kstream -> kstream.foreach((key, iHelpEntity) ->
+        System.out.printf(("IHelpEntity CONSUMED[%s] with Status -> [%s]%n \r\n"),
+            iHelpEntity.getDomain(),
+            iHelpEntity.isDead()));
+  }
+
+  @Bean
+  public Consumer<KStream<String, IHelpEntity>> inactiveDomainConsumer() {
     return kstream -> kstream.foreach((key, iHelpEntity) ->
         System.out.printf(("IHelpEntity CONSUMED[%s] with Status -> [%s]%n \r\n"),
             iHelpEntity.getDomain(),
