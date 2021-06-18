@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package net.kodar.protobuf;
+option java_outer_classname = "IHelpEntityProtos";
+
+message IHelpEntity {
+	bool is_dead = 1;
+	string health = 2;
+	string domain = 3;
+}

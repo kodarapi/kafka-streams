@@ -1,12 +1,17 @@
 spring:
   kafka:
     bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
-    consumer:
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: "*"
+    protobuf:
+      serializer: http://schema-registry:8081
+      deserializer: http://schema-registry:8081
+  properties:
+    specific:
+      protobuf:
+        value:
+          type: net.kodar.protobuf.IHelpEntityProtos$IHelpEntity
+    schema:
+      registry:
+        url: http://schema-registry:8081
 
 spring.cloud.stream:
   function:
@@ -21,13 +26,14 @@ spring.cloud.stream:
       entityProcessor-in-0:
         consumer:
           configuration:
+            key:
+              deserializer: org.apache.kafka.common.serialization.StringDeserializer
             value:
-              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+              deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
       entityProcessor-out-0:
         producer:
           configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.StringSerializer
             value:
-              serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    binder:
-      brokers:
-        ${KAFKA_HOST}:${KAFKA_PORT}
+              serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer

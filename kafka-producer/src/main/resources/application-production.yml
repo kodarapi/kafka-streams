@@ -2,9 +2,12 @@ spring.kafka:
   bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    properties:
-      spring:
-        json:
-          trusted:
-            packages: "*"
+    value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+  properties:
+    specific:
+      protobuf:
+        value:
+          type: net.kodar.protobuf.IHelpEntityProtos$IHelpEntity
+    schema:
+      registry:
+        url: http://schema-registry:8081
