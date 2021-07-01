@@ -10,7 +10,7 @@ public abstract class BaseDaoJpaImpl<PK, ENT> implements BaseDao<PK, ENT>{
   }
 
   @Override
-  public ENT get(PK id) {
+  public ENT getById(PK id) {
     return null;
   }
 

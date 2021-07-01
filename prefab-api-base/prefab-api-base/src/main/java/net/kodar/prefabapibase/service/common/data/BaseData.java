@@ -1,4 +1,4 @@
-package net.kodar.prefabapibase.service.common;
+package net.kodar.prefabapibase.service.common.data;
 
 import java.io.Serializable;
 import lombok.Data;

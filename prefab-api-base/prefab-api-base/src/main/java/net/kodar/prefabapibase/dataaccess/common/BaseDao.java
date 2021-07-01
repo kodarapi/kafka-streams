@@ -6,7 +6,9 @@ public interface BaseDao<PK, ENT> {
 
   ENT create(ENT entity);
 
-  ENT get(PK id);
+  ENT getById(PK id);
+
+  List<ENT> list(Long num);
 
   void update(ENT entity);
 
